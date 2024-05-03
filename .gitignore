@@ -4,3 +4,6 @@
 .DS_Store
 /.idea
 .idea/aspred.iml
+.DS_Store
+/.idea
+/exportToHTML
