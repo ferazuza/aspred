@@ -1,11 +1,14 @@
+import numpy as np
 import pandas as pd
 from datetime import datetime
 import re
 import requests
 from bs4 import BeautifulSoup
 
+from aspred.utils import standard_angle
 
-def R2D2_seeing(start_date: datetime, end_date: datetime)-> pd.DataFrame:
+
+def r2d2_seeing(start_date: datetime, end_date: datetime) -> pd.DataFrame:
     """
     This function returns the seeing data from the R2D2 database for the given date range.
 
@@ -62,3 +65,17 @@ def R2D2_seeing(start_date: datetime, end_date: datetime)-> pd.DataFrame:
     df = pd.DataFrame(frame)
 
     return df
+
+
+def lt_data(path: str = "../data/meteo_lt.dat") -> pd.DataFrame:
+    """
+    This function reads the data from a LT weather formatted file and returns it as a DataFrame.
+    :param path: The path to the file where the data is stored.
+    :return: df1: A DataFrame containing the data from the file.
+    """
+
+    col_names = ["date", "wms_status", "rain_flag", "moisture_flag", "truss_temp", "oil_temp", "wind_speed",
+                 "wind_direction", "ambient_temp", "dew_point", "humidity", "air_pressure", "light"]
+    df1 = pd.read_csv(path, sep=" ", names=col_names, parse_dates=[0], date_format="%Y-%m-%d%H:%M:%SUTC")
+    df1["wind_direction_radians"] = df1["wind_direction"].apply(lambda x: standard_angle(np.radians(x)))
+    return df1
