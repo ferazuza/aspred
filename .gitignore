@@ -9,3 +9,5 @@
 /exportToHTML
 .DS_Store
 /.idea
+/mathematica
+.DS_Store
