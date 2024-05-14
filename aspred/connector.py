@@ -79,3 +79,62 @@ def lt_data(path: str = "../data/meteo_lt.dat") -> pd.DataFrame:
     df1 = pd.read_csv(path, sep=" ", names=col_names, parse_dates=[0], date_format="%Y-%m-%d%H:%M:%SUTC")
     df1["wind_direction_radians"] = df1["wind_direction"].apply(lambda x: standard_angle(np.radians(x)))
     return df1
+
+from datetime import datetime
+
+
+def decode_CMT_line(line: str)-> list:
+    """ Decodes a line from the CMT weather data file and returns a list with the values
+
+    :param line: str
+        Line from the CMT weather data file
+
+    :return: list
+        List with the values
+    """
+
+    line = line.split(" ")
+    line = [i for i in line if i]
+    return line
+
+def cmt_data(path: str = "../data/carlsberg.weather.data/janjun96.met")-> pd.DataFrame:
+    """ Imports the CMT weather data and returns a pandas DataFrame
+
+    :param path: str
+        Path to the CMT weather data file
+
+    :return: pd.DataFrame
+        DataFrame with the CMT weather data
+    """
+    date_list = []
+    pressure_list = []
+    temperature_list = []
+    wind_speed_list = []
+    wind_direction_list = []
+    humidity_list = []
+    interior_temperature_list = []
+    acceptance_list = []
+
+    for line in open(path):
+        line = decode_CMT_line(line)
+        date = datetime(int(line[0]), int(line[1]), int(line[2]), int(line[3]), int(line[4]), int(line[5]))
+        date_list.append(date)
+        pressure_list.append(float(line[6]))
+        temperature_list.append(float(line[7]))
+        wind_speed_list.append(float(line[8]))
+        wind_direction_list.append(float(line[9]))
+        humidity_list.append(float(line[10]))
+        interior_temperature_list.append(float(line[11]))
+        acceptance_list.append(int(line[12]))
+
+    df = pd.DataFrame()
+    df["date"] = date_list
+    df["pressure"] = pressure_list
+    df["temperature"] = temperature_list
+    df["wind_speed"] = wind_speed_list
+    df["wind_direction"] = wind_direction_list
+    df["humidity"] = humidity_list
+    df["interior_temperature"] = interior_temperature_list
+    df["acceptance"] = acceptance_list
+
+    return df
