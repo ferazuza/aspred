@@ -80,10 +80,11 @@ def lt_data(path: str = "../data/meteo_lt.dat") -> pd.DataFrame:
     df1["wind_direction_radians"] = df1["wind_direction"].apply(lambda x: standard_angle(np.radians(x)))
     return df1
 
+
 from datetime import datetime
 
 
-def decode_CMT_line(line: str)-> list:
+def decode_CMT_line(line: str) -> list:
     """ Decodes a line from the CMT weather data file and returns a list with the values
 
     :param line: str
@@ -97,7 +98,8 @@ def decode_CMT_line(line: str)-> list:
     line = [i for i in line if i]
     return line
 
-def cmt_data(path: str = "../data/carlsberg.weather.data/janjun96.met")-> pd.DataFrame:
+
+def cmt_data(path: str = "../data/carlsberg.weather.data/janjun96.met") -> pd.DataFrame:
     """ Imports the CMT weather data and returns a pandas DataFrame
 
     :param path: str
@@ -138,3 +140,24 @@ def cmt_data(path: str = "../data/carlsberg.weather.data/janjun96.met")-> pd.Dat
     df["acceptance"] = acceptance_list
 
     return df
+
+
+def query_from_lt_header(query: str) -> pd.DataFrame:
+    """
+    This function queries the LT MySQL database and returns the results as a DataFrame.
+
+    :param query: The SQL query to be executed.
+    :return: A DataFrame containing the results of the query.
+    """
+    import mysql.connector
+
+    mydb = mysql.connector.connect(
+        host="150.204.240.8",
+        user="ffh_ro",
+        password="ffhcaotLTfhk",
+        charset='utf8',
+        database="fullfitsheaders"
+    )
+
+    dataframe = pd.read_sql(query, mydb)
+    return dataframe

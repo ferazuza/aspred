@@ -11,3 +11,5 @@
 /.idea
 /mathematica
 .DS_Store
+notebooks/seeing.html
+/aspred/__pycache__
