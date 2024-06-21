@@ -161,3 +161,26 @@ def query_from_lt_header(query: str) -> pd.DataFrame:
 
     dataframe = pd.read_sql(query, mydb)
     return dataframe
+
+def import_from_gtc() -> pd.DataFrame:
+    """
+    This function imports CSV data from the GTC weather station and returns it as a DataFrame.
+
+    :return: A DataFrame containing the data from the CSV file.
+    """
+
+    path = "../data/gtc_Report_01-01-2020_22-05-2024_10min.csv"
+
+    df = pd.read_csv(path, sep=",", skiprows=1, parse_dates=[0], date_format="%Y-%m-%d %H:%M:%S", na_values="Null")
+
+    # Set column names
+    df.columns = ["date", "wind_speed", "wind_direction", "temperature", "humidity", "pressure", "dew_point"]
+
+    #df["wind_speed"]=df["wind_speed"].astype(float)
+    #df["wind_direction"]=df["wind_direction"].astype(float)
+
+    df["wind_direction_radians"] = df["wind_direction"].apply(lambda x: standard_angle(np.radians(x)))
+
+    return df
+
+
