@@ -13,3 +13,4 @@
 .DS_Store
 notebooks/seeing.html
 /aspred/__pycache__
+*credentials.yaml
