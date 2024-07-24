@@ -142,7 +142,7 @@ def cmt_data(path: str = "../data/carlsberg.weather.data/janjun96.met") -> pd.Da
     return df
 
 
-def query_from_lt_header(query: str) -> pd.DataFrame:
+def query_from_lt_header(query: str, user: str, password: str) -> pd.DataFrame:
     """
     This function queries the LT MySQL database and returns the results as a DataFrame.
 
@@ -153,8 +153,8 @@ def query_from_lt_header(query: str) -> pd.DataFrame:
 
     mydb = mysql.connector.connect(
         host="150.204.240.8",
-        user="ffh_ro",
-        password="ffhcaotLTfhk",
+        user=user,
+        password=password,
         charset='utf8',
         database="fullfitsheaders"
     )
