@@ -1,0 +1,7 @@
+pycircular==0.1.2
+numpy==1.26.4
+pandas==2.2.1
+scipy==1.13.1
+matplotlib==3.8.3
+influxdb_client==1.39.0
+seaborn==0.13.2
